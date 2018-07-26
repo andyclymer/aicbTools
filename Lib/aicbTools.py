@@ -136,7 +136,7 @@ def readAICBFromPasteboard():
             data = data.tobytes()
     except NameError:
         pass
-    data = str(data)
+    data = data.decode("utf-8")
     return data
 
 def _getRectTransform(rect1, rect2, fixedScale=None):
