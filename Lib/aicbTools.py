@@ -139,6 +139,27 @@ def readAICBFromPasteboard():
     data = data.decode("utf-8")
     return data
 
+def writeAICBToPasteboard(data):
+    """
+    set the AICB data to the NSPasteboard
+    """
+    from AppKit import NSPasteboard, NSData
+    pb = NSPasteboard.generalPasteboard()
+    types = [
+        "CorePasteboardFlavorType 0x41494342",
+        "com.adobe.encapsulated-postscript"
+    ]
+    # clear pasteboard
+    pb.clearContents()
+    # convert to NSData and set to the pasteboard
+    try:
+        data = bytes(data, "utf-8") # Python 3
+    except:
+        data = bytes(data) # Python 2
+    nd = NSData.alloc().initWithBytes_length_(data, len(data))
+    for typ in types:
+        pb.setData_forType_(nd, typ)
+
 def _getRectTransform(rect1, rect2, fixedScale=None):
     """
     return an affine transform matrix
